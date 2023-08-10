@@ -1,33 +1,38 @@
-CREATE TABLE patient (
-    id int(10) SERIAL PRIMARY KEY,
-    first_name varchar(50),
-    last_name varchar(50),
-    patronymic varchar(50),
-    snils int(11),
-    birth_date varchar(10)
+createdb -U postgres testbd 
+CREATE TABLE IF NOT EXIST patient (
+    id uuid_generate_v4() SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    patronymic VARCHAR(50),
+    snils INT(11),
+    birth_date DATE
 );
-CREATE TABLE document (
-    id int(10) SERIAL PRIMARY KEY,
-    series varchar(11),
-    number int(16),
-    patient_id int(10) REFERENCES patient(id)
+CREATE TABLE IF NOT EXIST document (
+    id uuid_generate_v4() SERIAL PRIMARY KEY,
+    series VARCHAR(11),
+    number INT(16),
+    patient_id INT(10) REFERENCES patient(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 );
-CREATE TABLE card (
-    id int(10) SERIAL PRIMARY KEY,
-    number int,
-    open_date varchar(10),
-    close_date varchar(10),
-    patient_id int(10) REFERENCES patient(id)
+CREATE TABLE IF NOT EXIST card (
+    id uuid_generate_v4() SERIAL PRIMARY KEY,
+    number INT,
+    open_date DATE,
+    close_date DATE,
+    patient_id INT(10) REFERENCES patient(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 );
-CREATE TABLE doctor (
-    id int(10) SERIAL PRIMARY KEY,
-    first_name varchar(50),
-    last_name varchar(50),
-    patronymic varchar(50)
+CREATE TABLE IF NOT EXIST doctor (
+    id uuid_generate_v4() SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    patronymic VARCHAR(50)
 );
-CREATE TABLE visit (
-    id int(10) SERIAL PRIMARY KEY,
-    date varchar(10),
+CREATE TABLE IF NOT EXIST visit (
+    id uuid_generate_v4() SERIAL PRIMARY KEY,
+    visit_time VARCHAR(10),
     doctor_id int(10) REFERENCES doctor(id),
     diagnosis varchar(80),
     card_id int(10) REFERENCES card(id)
